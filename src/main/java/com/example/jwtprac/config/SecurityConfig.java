@@ -1,8 +1,8 @@
 package com.example.jwtprac.config;
 
+import com.example.jwtprac.jwt.JWTFilter;
 import com.example.jwtprac.jwt.JWTUtil;
 import com.example.jwtprac.jwt.LoginFilter;
-import org.apache.catalina.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -65,6 +65,10 @@ public class SecurityConfig {
                 .anyRequest().authenticated());
         http
             .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        //JWT필터 등록
+        http
+            .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
         //세션 설정
         http

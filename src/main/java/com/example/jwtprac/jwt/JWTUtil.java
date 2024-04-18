@@ -19,10 +19,8 @@ public class JWTUtil {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
 
-    //검증
-    public String getUsername(String token){
+    public String getUsername(String token) {
 
-        //veriftWith() : 토큰 확인
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
     }
 
@@ -36,7 +34,6 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    //토큰 생성
     public String createJwt(String username, String role, Long expiredMs) {
 
         return Jwts.builder()
